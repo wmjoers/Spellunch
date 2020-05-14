@@ -9,12 +9,18 @@ public class Unicorn : MonoBehaviour
     public float rotationForce = 0f;
     public float jumpForce = 0f;
 
+    private AudioSource audioSource;
+
+    public AudioClip jumpSound;
+    public AudioClip impactSound;
+
     // public float speed = 80f;
 
     // Start is called before the first frame update
     void Start()
     {
         rb2D = gameObject.GetComponent<Rigidbody2D>();    
+        audioSource = gameObject.GetComponent<AudioSource>();
         // transform.position = new Vector3( 0, 0, 0); 
     }
 
@@ -43,7 +49,13 @@ public class Unicorn : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Space))
         {
+            audioSource.PlayOneShot(jumpSound);
             rb2D.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        audioSource.PlayOneShot(impactSound);        
     }
 }
